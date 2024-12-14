@@ -1,0 +1,64 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Étape 1 : Cloner le code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Étape 2 : Configurer Python
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.12'
+
+      # Étape 3 : Installer les dépendances
+      - name: Install dependencies
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
+
+      # Étape 4 : Construire l'image Docker
+      - name: Build Docker image
+        run: |
+          docker build -t health-calculator .
+
+      # Étape 5 : Lancer le conteneur Docker
+      - name: Run Docker container
+        run: |
+          docker run -d -p 5000:5000 --name health-calculator-container health-calculator
+
+      # Étape 6 : Attendre le démarrage du conteneur
+      - name: Wait for Docker container to start
+        run: sleep 15
+
+      # Étape 7 : Vérifier si le serveur Flask fonctionne dans Docker
+      - name: Check if Flask server is running
+        run: |
+          until curl -s http://127.0.0.1:5000; do
+            echo "Waiting for the Flask server to start...";
+            sleep 2;
+          done
+
+      # Étape 8 : Tester les endpoints API
+      - name: Test API endpoints in Docker
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+          -d '{"height": 1.75, "weight": 70}' http://127.0.0.1:5000/bmi
+
+      # Étape 9 : Nettoyer le conteneur Docker
+      - name: Clean up Docker
+        run: |
+          docker stop health-calculator-container
+          docker rm health-calculator-container
+          docker rmi health-calculator
