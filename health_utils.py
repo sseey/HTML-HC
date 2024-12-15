@@ -6,7 +6,7 @@ def calculate_bmi(height: float, weight: float) -> float:
     :return: BMI arrondi à 2 décimales.
     """
     if height <= 0 or weight <= 0:
-        raise ValueError("La taille et le poids doivent être supérieurs à 0.")
+        raise ValueError("La taille et le poids doivent être des nombres positifs.")
     return round(weight / (height ** 2), 2)
 
 def calculate_bmr(height: float, weight: float, age: int, gender: str) -> float:
@@ -19,7 +19,7 @@ def calculate_bmr(height: float, weight: float, age: int, gender: str) -> float:
     :return: BMR arrondi à 2 décimales.
     """
     if height <= 0 or weight <= 0 or age <= 0:
-        raise ValueError("La taille, le poids et l'âge doivent être supérieurs à 0.")
+        raise ValueError("La taille, le poids et l'âge doivent être des nombres positifs.")
     
     gender = gender.lower()
     if gender == 'male':

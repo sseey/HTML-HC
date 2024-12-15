@@ -1,0 +1,140 @@
+/* Global Styles */
+body {
+    margin: 0;
+    padding: 0;
+    background: rgb(0,0,0);
+    background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(37,33,38,1) 35%, rgba(48,40,51,1) 100%);
+    color: #fff;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* Card Styles */
+.card {
+    width: 350px;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); /* Subtle shadow */
+    background: none; /* Fully transparent */
+    color: #fff;
+    text-align: center;
+    align-items: center;
+}
+
+.card h1 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.card h2 {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+/* Form Elements */
+form div {
+    margin-bottom: 15px;
+}
+
+input, select, button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: none;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+input, select {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.7);
+}
+
+button {
+    background-color: #302e38;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+/* Result Section */
+#result {
+    margin-top: 20px;
+    font-size: 1.2em;
+    color: #ffdd57;
+}
+
+
+/* Footer Styles */
+/* Footer Styles */
+.footer {
+    position: fixed; /* Fixe le footer en bas de la page */
+    bottom: 0;
+    width: 100%;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0));
+    padding: 15px 30px; /* Espace supplémentaire pour plus de confort visuel */
+    display: flex;
+    justify-content: space-between; /* Sépare le texte et l'icône */
+    box-sizing: border-box;
+    text-align: center;
+}
+
+/* Centrer le texte du copyright */
+.footer p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #ffffff;
+    text-align: center;
+    flex-grow: 1; /* Permet au texte de prendre l'espace central */
+}
+
+/* Footer Icons Container */
+.footer-icons {
+    display: flex; /* Met les icônes côte à côte */
+    gap: 15px; /* Espace entre les icônes */
+}
+
+/* GitHub Icon */
+.footer-icon.github {
+    width: 24px; /* Taille de l'icône */
+    height: 24px;
+    cursor: pointer;
+    filter: invert(1); /* Couleur blanche */
+    transition: transform 0.2s ease-in-out;
+}
+
+.footer-icon.github:hover {
+    transform: scale(1.2); /* Effet zoom au survol */
+}
+
+/* LinkedIn Icon (déjà présent) */
+.footer-icon.linkedin {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    filter: invert(1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.footer-icon.linkedin:hover {
+    transform: scale(1.2);
+}
+

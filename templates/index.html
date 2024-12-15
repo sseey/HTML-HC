@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Calculator</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+
+    <!-- Main Content -->
+    <div class="card">
+        <h1>Health Calculator</h1>
+        <h2>Calculate BMI or BMR</h2>
+
+        <form id="health-form">
+            <div>
+                <label for="height">Height (in meters):</label>
+                <input type="number" step="0.01" id="height" placeholder="Enter height in meters" required>
+            </div>
+            <div>
+                <label for="weight">Weight (in kilograms):</label>
+                <input type="number" step="0.1" id="weight" placeholder="Enter weight in kilograms" required>
+            </div>
+            <div>
+                <label for="age">Age:</label>
+                <input type="number" id="age" placeholder="Enter your age" required>
+            </div>
+            <div>
+                <label for="gender">Gender:</label>
+                <select id="gender" required>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+            <button type="button" onclick="calculateBMI()">Calculate BMI</button>
+            <button type="button" onclick="calculateBMR()">Calculate BMR</button>
+        </form>
+
+        <p id="result"></p>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p> </p>
+        <div class="footer-icons">
+            <a href="https://github.com/sseey" target="_blank">
+                <img src="/assets/img/github.svg" alt="GitHub" class="footer-icon github">
+            </a>
+            <a href="https://www.linkedin.com/in/hicham-smail-7153982b6/" target="_blank">
+                <img src="/assets/img/linkedin.svg" alt="LinkedIn" class="footer-icon linkedin">
+            </a>
+        </div>
+    </footer>
+    
+
+    <script>
+        async function calculateBMI() {
+            const height = document.getElementById('height').value;
+            const weight = document.getElementById('weight').value;
+
+            if (!height || !weight) {
+                document.getElementById('result').textContent = "Please provide height and weight.";
+                return;
+            }
+
+            const response = await fetch('/bmi', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ height: parseFloat(height), weight: parseFloat(weight) })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                document.getElementById('result').textContent = `Your BMI is: ${data.bmi}`;
+            } else {
+                document.getElementById('result').textContent = `Error: ${data.error}`;
+            }
+        }
+
+        async function calculateBMR() {
+            const height = document.getElementById('height').value;
+            const weight = document.getElementById('weight').value;
+            const age = document.getElementById('age').value;
+            const gender = document.getElementById('gender').value;
+
+            if (!height || !weight || !age || !gender) {
+                document.getElementById('result').textContent = "Please provide all required fields (height, weight, age, gender).";
+                return;
+            }
+
+            const response = await fetch('/bmr', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    height: parseFloat(height),
+                    weight: parseFloat(weight),
+                    age: parseInt(age, 10),
+                    gender: gender
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                document.getElementById('result').textContent = `Your BMR is: ${data.bmr}`;
+            } else {
+                document.getElementById('result').textContent = `Error: ${data.error}`;
+            }
+        }
+    </script>
+</body>
+</html>

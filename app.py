@@ -1,26 +1,32 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template, send_from_directory
 from health_utils import calculate_bmi, calculate_bmr
+from dotenv import load_dotenv
+import os
 
-app = Flask(__name__)
+# Charger les variables d'environnement
+load_dotenv()
 
-@app.route('/', methods=['GET'])
+app = Flask(__name__, template_folder="templates", static_folder="static")
+
+# Ajouter un routeur pour les fichiers dans 'assets'
+@app.route('/assets/<path:filename>')
+def serve_assets(filename):
+    """
+    Servir les fichiers du dossier 'assets'.
+    """
+    return send_from_directory('assets', filename)
+
+@app.route('/')
 def home():
     """
-    Page d'accueil pour l'API.
+    Page d'accueil avec une interface utilisateur.
     """
-    return jsonify({
-        "message": "Bienvenue sur l'API Health Calculator.",
-        "endpoints": {
-            "/bmi": "POST - Calcule le BMI avec 'height' (en m) et 'weight' (en kg).",
-            "/bmr": "POST - Calcule le BMR avec 'height' (en cm), 'weight' (en kg), 'age', et 'gender'."
-        }
-    }), 200
+    return render_template('index.html')
 
 @app.route('/bmi', methods=['POST'])
 def bmi():
     """
     Endpoint pour calculer le BMI.
-    Attend un JSON avec 'height' (en m) et 'weight' (en kg).
     """
     try:
         data = request.get_json()
@@ -37,7 +43,6 @@ def bmi():
 def bmr():
     """
     Endpoint pour calculer le BMR.
-    Attend un JSON avec 'height' (en cm), 'weight' (en kg), 'age', et 'gender'.
     """
     try:
         data = request.get_json()
@@ -53,4 +58,6 @@ def bmr():
         return jsonify({"error": str(e)}), 400
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    # Charger le port depuis .env ou utiliser le port 5000 par défaut
+    PORT = int(os.getenv("PORT", 5000))
+    app.run(host="0.0.0.0", port=PORT)
